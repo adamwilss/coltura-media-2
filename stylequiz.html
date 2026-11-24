@@ -24,7 +24,7 @@ const D={"styles": {"nes": "NES 8-bit", "snes": "16-bit", "hd2d": "HD-2D painter
 const L='ABCDE';const qs=D.questions;
 function show(){if(i>=qs.length)return results();const q=qs[i];document.getElementById('q').textContent=`${i+1} of ${qs.length} · ${q.object}`;
 document.getElementById('prog').style.width=(100*i/qs.length)+'%';const g=document.getElementById('grid');g.hidden=false;document.getElementById('res').hidden=true;g.innerHTML='';
-q.options.forEach((o,j)=>{const d=document.createElement('div');d.className='opt'+(ans[i]===j?' sel':'');d.innerHTML=`<img src="${o.img}" alt=""><span>${L[j]}</span>`;
+q.options.forEach((o,j)=>{const d=document.createElement('div');d.className='opt'+(ans[i]===j?' sel':'');d.innerHTML=`<img src="${o.img}?v=2" alt="" onerror="if(!this.dataset.r){this.dataset.r=1;setTimeout(()=>{this.src=this.src.split('?')[0]+'?v='+Date.now()},800)}"><span>${L[j]}</span>`;
 d.onclick=()=>{ans[i]=j;localStorage.setItem(K,JSON.stringify(ans));d.classList.add('sel');setTimeout(()=>{i++;show()},250)};g.appendChild(d)})}
 function results(){document.getElementById('grid').hidden=true;document.getElementById('prog').style.width='100%';document.getElementById('q').textContent='done. here is what you picked.';
 const c={},shown={};qs.forEach((q,qi)=>{q.options.forEach(o=>shown[o.style]=(shown[o.style]||0)+1);if(ans[qi]>=0){const s=q.options[ans[qi]].style;c[s]=(c[s]||0)+1}});
@@ -37,5 +37,6 @@ const r=document.getElementById('res');r.innerHTML=h;r.hidden=false;
 document.getElementById('copy').onclick=()=>{navigator.clipboard.writeText(txt).then(()=>document.getElementById('copy').textContent='copied. paste it to Claude.')};
 document.getElementById('again').onclick=()=>{ans={};localStorage.removeItem(K);i=0;show()}}
 document.getElementById('back').onclick=()=>{if(i>0){i--;show()}};document.getElementById('skip').onclick=()=>{ans[i]=-1;localStorage.setItem(K,JSON.stringify(ans));i++;show()};
+qs.forEach(q=>q.options.forEach(o=>{const im=new Image();im.src=o.img+'?v=2'}));
 show();
 </script></body></html>
